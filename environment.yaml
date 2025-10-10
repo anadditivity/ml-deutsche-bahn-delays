@@ -1,0 +1,10 @@
+name: ml-db-delays
+channels:
+  - defaults
+dependencies:
+  - pandas
+  - scikit-learn
+  - plotnine
+  - numpy
+  - seaborn
+  - matplotlib
