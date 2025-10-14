@@ -1,0 +1,6 @@
+Download from Kaggle:
+https://www.kaggle.com/api/v1/datasets/download/nokkyu/deutsche-bahn-db-delays
+
+Or with curl (into Downloads):
+curl -L -o ~/Downloads/deutsche-bahn-db-delays.zip\
+  https://www.kaggle.com/api/v1/datasets/download/nokkyu/deutsche-bahn-db-delays
