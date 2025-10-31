@@ -52,3 +52,36 @@ Then, move on to other models:
 - Train a model that predicts whether delay will be over 20 minutes.
 - Train a model that predicts whether delay will be over 25 minutes.
 - Train a model that predicts whether delay will be over 30 minutes.
+
+# Tasks
+## Task 1
+For each line in the dataset, create columns
+- `dst_arrival_delay_over_6_minutes`
+- `dst_arrival_delay_over_5_minutes`
+- `dst_arrival_delay_over_10_minutes`
+- `dst_arrival_delay_over_15_minutes`
+- `dst_arrival_delay_over_20_minutes`
+- `dst_arrival_delay_over_25_minutes`
+- `dst_arrival_delay_over_30_minutes`
+That have a boolean value (`True/False`).
+
+This can just be done by checking the `arrival_delay_m` value.
+
+For every stop on some train line in some departure schedule, leaving only one line per stop (the latest one; get from the ID timestamp) is sufficient.
+
+
+## Task 2
+The difficult task.
+
+**Accurately** fetch the full train line for some departure. The base for this can be found in Emile's solution of Task 1.25 [here](/data/cleanUp_dataDBQuestion.ipynb). Note that the existing solution may not yet be fully accurate -- sort by the timestamps in the ID instead of just the `arrival_plan`.
+
+Check the `ID` value of those lines in the dataset. From my checking, it seemed as if the ID changes when the train reaches a new state. Is that true?
+
+Now comes the fun part.
+
+- Figure out the direction the train is heading.
+- Figure out the last stop the train was at.
+- For every stop the train has not yet been at (defined by some dataset line `x`):
+    - Create a line in the dataset. This line consists of all the info in `x` as well as the `dst_eva_nr` of the destination station, the `dst_arrival_plan` of the destination station and all the `dst_arrival_delay_over_N_minutes` boolean values.
+
+***Ensure that no stops are missed and that the stops are truly in correct order. This can be checked also by the path length in the ID**
