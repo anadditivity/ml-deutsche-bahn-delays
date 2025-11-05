@@ -1,5 +1,5 @@
 Fetch the connections_v2.csv file from either the Google Drive link:
 
-https://drive.google.com/file/d/1xDWlgcdeIlCBxtTc0NqQKWABhJB8QpNZ/view?usp=share_link
+https://drive.google.com/file/d/12aPUEuJMe0dgwnHv9mqcKiKAToRq1Hlx/view?usp=sharing
 
 or build it yourself from the file in the repository from the train_line.ipynb file. This might crash your computer as you're creating 15 million lines of CSV.
