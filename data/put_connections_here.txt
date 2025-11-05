@@ -1,4 +1,4 @@
-Fetch the connections.csv file from either the Google Drive link:
+Fetch the connections_v2.csv file from either the Google Drive link:
 
 https://drive.google.com/file/d/1xDWlgcdeIlCBxtTc0NqQKWABhJB8QpNZ/view?usp=share_link
 

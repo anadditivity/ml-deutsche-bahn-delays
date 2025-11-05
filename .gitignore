@@ -207,7 +207,7 @@ marimo/_lsp/
 __marimo__/
 
 ### DBtrainrides.csv
-data/DBtrainrides.csv
+DBtrainrides.csv
 ### connections.csv
-data/connections.csv
 connections.csv
+connections_v2.csv
