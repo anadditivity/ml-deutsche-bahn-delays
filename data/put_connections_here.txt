@@ -1,7 +1,15 @@
-Fetch the connections_v2.csv file from either the Google Drive link:
+Fetch the connections_v3.csv file from either the Google Drive link:
 
-file with correct lines: https://drive.google.com/file/d/14Thc136RbCAJTNRZb8E4BefjlY5v6c43/view?usp=drive_link
+!!!!!!!!!!!!!!!! RENAME TO connections_v3.csv !!!!!!!!!!!!!!!!!!!!!!!
+file with correct lines: https://drive.google.com/file/d/14Thc136RbCAJTNRZb8E4BefjlY5v6c43/view
+!!!!!!!!!!!!!!!! RENAME TO connections_v3.csv !!!!!!!!!!!!!!!!!!!!!!!
 
-older version: https://drive.google.com/file/d/12aPUEuJMe0dgwnHv9mqcKiKAToRq1Hlx/view?usp=sharing
+
+
+
+
+
+old file:
+connection_v2: https://drive.google.com/file/d/12aPUEuJMe0dgwnHv9mqcKiKAToRq1Hlx/view?usp=sharing
 
 or build it yourself from the file in the repository from the train_line.ipynb file. This might crash your computer as you're creating 15 million lines of CSV.
