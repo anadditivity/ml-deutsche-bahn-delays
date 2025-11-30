@@ -9,3 +9,8 @@ dependencies:
   - seaborn
   - matplotlib
   - ipykernel
+  - flask
+  - pytest
+  - pip
+  - pip:
+    - python-Levenshtein
