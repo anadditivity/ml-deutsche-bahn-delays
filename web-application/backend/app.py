@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from datetime import datetime
 from pathlib import Path
+from flask_cors import CORS
 
 
 from services.lookup import (
@@ -16,6 +17,7 @@ from services.lookup import (
 from services.model_client import model_client
 
 app = Flask(__name__)
+CORS(app)
 
 data_path = Path(__file__).parent.parent.parent / "data" / "connections_v3.csv"
 load_data(str(data_path))
