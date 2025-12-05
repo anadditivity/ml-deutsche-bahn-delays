@@ -1,0 +1,285 @@
+body{
+  background: #f9e2cb;
+}
+
+
+.ticket-container {
+  position: relative;
+  overflow: visible;
+  width: 100%;
+  max-width: 100%;   
+  aspect-ratio: 9 / 4;  
+  z-index: 0; 
+}
+
+.ticket-container + .ticket-container {
+    margin-top: -100px; 
+}
+
+
+
+.ticket-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.station-input {
+  position: absolute;
+  top: 36.5%;    
+  left: 40.6%;   
+  width: 13.6%;  
+  height: 3.9%;  
+
+  font-size: 1.2vw;
+  font-family: 'Courier New', monospace;
+  border: none;
+  outline: none;
+  background: #f9e2cb;
+  padding-left: 5px;
+  box-sizing: border-box;
+}
+
+.destination-input {
+  position: absolute;
+  top: 45.5%;    
+  left: 40.6%;   
+  width: 13.6%;  
+  height: 3.9%;  
+
+  font-size: 1.2vw;
+  font-family: 'Courier New', monospace;
+  border: none;
+  outline: none;
+  background: #f9e2cb;
+  padding-left: 5px;
+  box-sizing: border-box;
+}
+
+.line-input {
+  position: absolute;
+  top: 54.0%;    
+  left: 40.6%;   
+  width: 13.7%;  
+  height: 3.9%;  
+
+  font-size: 1.2vw;
+  font-family: 'Courier New', monospace;
+  border: none;
+  outline: none;
+  background: #f9e2cb;
+  padding-left: 5px;
+  box-sizing: border-box;
+}
+
+.info-input {
+  position: absolute;
+  top: 62.5%;    
+  left: 40.5%;   
+  width: 13.7%;  
+  height: 3.9%;  
+
+  font-size: 1.2vw;
+  font-family: 'Courier New', monospace;
+  border: none;
+  outline: none;
+  background: #f9e2cb;
+  padding-left: 5px;
+  box-sizing: border-box;
+}
+
+.delay-input {
+  position: absolute;
+  top: 62.5%;    
+  left:57.4%;   
+  width: 13.7%;  
+  height: 3.9%;  
+
+  font-size: 1.2vw;
+  font-family: 'Courier New', monospace;
+  border: none;
+  outline: none;
+  background: #f9e2cb;
+  padding-left: 5px;
+  box-sizing: border-box;
+}
+
+.current-time-input {
+  position: absolute;
+  top: 36.5%;    
+  left: 57.4%;   
+  width: 13.7%;  
+  height: 3.9%;  
+
+  font-size: 1.2vw;
+  font-family: 'Courier New', monospace;
+  border: none;
+  outline: none;
+  background: #f9e2cb;
+  padding-left: 5px;
+  box-sizing: border-box;
+}
+
+.departure-time-input {
+  position: absolute;
+  top: 45.5%;  
+  left: 57.4%;   
+  width: 13.7%;  
+  height: 3.9%;  
+
+  font-size: 1.2vw;
+  font-family: 'Courier New', monospace;
+  border: none;
+  outline: none;
+  background: #f9e2cb;
+  padding-left: 5px;
+  box-sizing: border-box;
+}
+
+
+.arrival-time-input {
+  position: absolute;
+  top: 54.0%;   
+  left: 57.4%;   
+  width: 13.7%;  
+  height: 3.9%;  
+
+  font-size: 1.2vw;
+  font-family: 'Courier New', monospace;
+  border: none;
+  outline: none;
+  background: #f9e2cb;
+  padding-left: 5px;
+  box-sizing: border-box;
+}
+
+
+
+.predict-btn {
+  position: absolute;
+  top: 55.0%;   
+  left: 74.4%;   
+  width: 13.7%;  
+  height: 3.9%;  
+
+  font-size: 1.2vw;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  color: #f9e2cb;    
+  background: #4e240f;   
+  border: 2px solid #46200e; 
+  border-radius: 8px;     
+  outline: none;
+  box-sizing: border-box;
+  z-index: 10;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: all 0.2s ease;  
+  padding-left: 5px;
+}
+
+.reset-btn {
+  position: absolute;
+  top: 45.0%;   
+  left: 74.4%;   
+  width: 13.7%;  
+  height: 3.9%;  
+
+  font-size: 1.2vw;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  color: #f9e2cb;    
+  background: #7e2c03;   
+  border: 2px solid #712803; 
+  border-radius: 8px;     
+  outline: none;
+  box-sizing: border-box;
+  z-index: 10;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: all 0.2s ease;  
+  padding-left: 5px;
+}
+
+
+.reset-btn:hover, .predict-btn:hover {
+  background: #603a27; 
+}
+
+
+.reset-btn:active, .predict-btn:active {
+  background: #46200e;
+  transform: translateY(1px);
+}
+
+
+.prediction-text {
+    font-family: "Courier New", monospace; 
+    padding: 10px 20px;
+    color: #222;
+    font-size: 18px;
+    line-height: 1.4;
+    position: absolute;
+    top: 37%;    
+    left:19%;   
+    width: 40%;  
+    height: 6%;  
+    text-align: center;
+}
+
+.prediction-text p {
+    margin: 5px 0;
+    font-weight: bold;
+}
+
+.prediction-text .prob-line {
+    font-size: 14px;
+    color: #555;
+}
+
+.prediction-text .model-version {
+    font-size: 12px;
+    color: #888;
+    margin-top: 8px;
+}
+
+
+
+.suggestions-container {
+   position: absolute;    
+    left: 40.5%;   
+    width: 13.7%;  
+
+    background: #f9e2cb;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    display: none; 
+    z-index: 1000;
+    font-family: "Courier New", monospace;
+}
+
+#info-suggestions{
+  top: 66.4%;
+}
+
+#line-suggestions{
+  top: 57.9%;
+}
+
+#src-station-suggestions{
+  top: 40.4%;
+}
+
+#dst-station-suggestions{
+  top: 49.4%;
+}
+
+.suggestions-container div {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.suggestions-container div:hover {
+    background-color: #eee;
+}
