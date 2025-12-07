@@ -50,8 +50,9 @@ def build_features(payload):
     dst_plan = parse_iso(payload["dst_arrival_plan"])
     start_ts = parse_iso(payload["start_timestamp"])
 
-    if src_plan > start_ts:
-        raise ValueError("src_arrival_plan must be <= start_timestamp")
+    ## Modify this to be correct
+    if src_plan < start_ts:
+        raise ValueError("src_arrival_plan must be >= start_timestamp")
 
     if dst_plan < src_plan:
         raise ValueError("dst_arrival_plan must be >= src_arrival_plan")
