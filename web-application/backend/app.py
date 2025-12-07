@@ -50,7 +50,7 @@ def build_features(payload):
     dst_plan = parse_iso(payload["dst_arrival_plan"])
     start_ts = parse_iso(payload["start_timestamp"])
 
-    ## Modify this to be correct
+    ## Modified this to be correct
     if src_plan < start_ts:
         raise ValueError("src_arrival_plan must be >= start_timestamp")
 
@@ -130,4 +130,5 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(port=5530, debug=True)
+    # Changed to false to remove double-loading
+    app.run(port=5530, debug=False)
