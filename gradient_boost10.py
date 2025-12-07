@@ -12,7 +12,7 @@ print(data.shape)
 
 # For the first tests we will just try to make the boolean decision whether the train was delayed or not
 # So we will create a new column from dst_arrival_delay that just checks if the value is larger than 0 or not
-data['delayed'] = (data['dst_arrival_delay'] > 6). astype(int)
+data['delayed'] = (data['dst_arrival_delay'] > 10). astype(int)
 data = data[data.columns.drop(list(data.filter(regex='dst_arrival_delay')))]
 
 # Here I will select 1000 datapoints that were delayed and 10000 datapoints that were on time
@@ -97,5 +97,5 @@ for learning_rate in np.linspace(0.1,1.0,10):
 
 
 bst = xgb.train(optimal_params, dtrain, 50, evals=eval_list, custom_metric=xgb_f1, maximize=True)
-bst.save_model('model6.json')
+bst.save_model('model10.json')
 print(f1_score(y_test, preds, pos_label=1))
