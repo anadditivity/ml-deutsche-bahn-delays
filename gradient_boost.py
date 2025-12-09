@@ -1,101 +1,105 @@
+
 import numpy as np
 import pandas as pd
 import xgboost as xgb
-from sklearn.metrics import accuracy_score, f1_score
+from sklearn.metrics import f1_score
 from sklearn.model_selection import train_test_split
 
-# This file will contain test runs for xgboost
-# we try this out since it was presented in homework 5 and it might give some better results
+# Load full dataset
+target_delay = 20
 
 data = pd.read_csv('data/connections_v3.csv')
-print(data.shape)
+data['delayed'] = (data['dst_arrival_delay'] > target_delay).astype(int)
+data = data.drop(columns=list(data.filter(regex='dst_arrival_delay')))
 
-# For the first tests we will just try to make the boolean decision whether the train was delayed or not
-# So we will create a new column from dst_arrival_delay that just checks if the value is larger than 0 or not
-data['delayed'] = (data['dst_arrival_delay'] > 0). astype(int)
-data = data[data.columns.drop(list(data.filter(regex='dst_arrival_delay')))]
 
-# Here I will select 1000 datapoints that were delayed and 10000 datapoints that were on time
-positive_sample = data[data['delayed'] == 1].sample(n=1000, frac=None, axis=0, random_state=13)
-negative_sample = data[data['delayed'] == 0].sample(n=1000, frac=None, axis=0, random_state=13)
-train_sub = pd.concat([positive_sample, negative_sample], axis=0)
-train_sub.sort_index(inplace=True)
-
-X_train = train_sub.drop('delayed', axis=1)
-y_train = train_sub['delayed']
-
+# Extract time features
 time_features = ['start_timestamp', 'src_arrival_plan', 'dst_arrival_plan']
-
 for col in time_features:
-  X_train[col] = pd.to_datetime(X_train[col])
+    data[col] = pd.to_datetime(data[col])
+    data[f"{col}_sec"] = data[col].dt.second
+    data[f"{col}_minute"] = data[col].dt.minute
+    data[f"{col}_hour"] = data[col].dt.hour
+    data[f"{col}_day"] = data[col].dt.dayofweek
+data = data.drop(columns=time_features)
 
-  X_train[col + '_sec'] = X_train[col].dt.second
-  X_train[col + '_minute'] = X_train[col].dt.minute
-  X_train[col + '_hour'] = X_train[col].dt.hour
-  X_train[col + '_day'] = X_train[col].dt.dayofweek
-  X_train = X_train.drop(col, axis=1)
+# ---- STEP 1: Collect unique categories for each categorical column ----
+categorical_cols = [col for col in data.columns if not pd.api.types.is_numeric_dtype(data[col]) and col != 'delayed']
+category_map = {col: data[col].astype('category').cat.categories.tolist() for col in categorical_cols}
 
-for col in X_train.columns:
-  if not pd.api.types.is_numeric_dtype(X_train[col]):
-    # turn all non numeric features into categorical features 
-    X_train[col] = X_train[col].astype('category')
+# Build expected columns list
+expected_columns = []
+for col, cats in category_map.items():
+    expected_columns.extend([f"{col}_{cat}" for cat in cats])
 
-    # use one-hot-encoding for these categorical features
-    data_dum = pd.get_dummies(X_train[col], col, dtype='int')
-    X_train = pd.concat([X_train, data_dum], axis=1)
-    X_train = X_train.drop(col, axis=1)
 
-X_train, X_test, y_train, y_test = train_test_split(X_train, y_train, random_state = 13, test_size = 0.10)
-X_train_small, X_val, y_train_small, y_val = train_test_split(X_train, y_train, random_state = 13, test_size = 0.20)
-# Since this is just some basic testing we won't use any cross validation
+### unbalamnced sample for training
+positive_sample = data[data['delayed'] == 1].sample(n=1000, random_state=13)
+negative_sample = data[data['delayed'] == 0].sample(n=10000, random_state=13)
+train_subset = pd.concat([positive_sample, negative_sample], axis=0)
 
-print(X_train_small.shape)
-print(X_val.shape)
-print(X_test.shape)
-print(y_train_small.shape)
-print(y_val.shape)
-print(y_test.shape)
+# Apply same OHE mapping to subset
+def apply_ohe(df, category_map, expected_columns):
+    df = df.copy()
+    for col in category_map.keys():
+        df[col] = df[col].astype('category')
+    dummies = pd.get_dummies(df[category_map.keys()], prefix_sep='_', dtype='int')
+    df = pd.concat([df.drop(columns=category_map.keys()), dummies], axis=1)
+    return df.reindex(columns=expected_columns, fill_value=0)
 
-dtrain = xgb.DMatrix(X_train, label=y_train)
-dtrain_small = xgb.DMatrix(X_train_small, label=y_train_small)
+X_train_small = apply_ohe(train_subset.drop(columns=['delayed']), category_map, expected_columns).astype(np.float32)
+y_train_small = train_subset['delayed']
+
+# ---- STEP 4: Create validation and test sets from full dataset ----
+val_sample = data.sample(n=5000, random_state=42)
+test_sample = data.sample(n=5000, random_state=13)
+
+X_val = apply_ohe(val_sample.drop(columns=['delayed']), category_map, expected_columns).astype(np.float32)
+y_val = val_sample['delayed']
+
+X_test = apply_ohe(test_sample.drop(columns=['delayed']), category_map, expected_columns).astype(np.float32)
+y_test = test_sample['delayed']
+
+# Convert to DMatrix
+dtrain = xgb.DMatrix(X_train_small, label=y_train_small)
 dval = xgb.DMatrix(X_val, label=y_val)
 dtest = xgb.DMatrix(X_test, label=y_test)
 
 def xgb_f1(preds, labels, threshold=0.5):
-  # This function will be used so the model actually optimizes the f-score and not the accuracy, as our real data set is heavily imbalanced
-  label_list = labels.get_label()
-  pred_list = (preds > threshold).astype(int)
-  return 'f1', f1_score(label_list, pred_list, pos_label = 1)
+    label_list = labels.get_label()
+    pred_list = (preds > threshold).astype(int)
+    return 'f1', f1_score(label_list, pred_list, pos_label=1)
 
-optimal_params = 0
+optimal_params = None
 best_f_score = 0
 
-for learning_rate in np.linspace(0.1,1.0,10):
-  for max_depth in range(3,10):
-    for child_weight in np.linspace(0.5,2,15):
-      learning_rate = np.float32(learning_rate)
-      params = {
-        "booster": 'gbtree', 
-        "eta": learning_rate,
-        "objective": 'binary:logistic',
-        "seed":111,
-        "max_depth": max_depth,
-        "min_child_weight": child_weight,
-        "sub_sampling": 0.9
-      }
+### replace the rows later:
+"""
+for learning_rate in np.linspace(0.1, 1.0, 10):
+    for max_depth in range(3, 10):
+        for child_weight in np.linspace(0.5, 2, 15):
+"""
+for learning_rate in np.linspace(0.1, 1.0, 2):
+    for max_depth in range(3, 4):
+        for child_weight in np.linspace(0.5, 2, 2):
+            params = {
+                "booster": 'gbtree',
+                "eta": float(learning_rate),
+                "objective": 'binary:logistic',
+                "seed": 111,
+                "max_depth": max_depth,
+                "min_child_weight": float(child_weight),
+                "subsample": 0.9
+            }
+            eval_list = [(dtrain, 'train'), (dval, 'eval')]
+            bst = xgb.train(params, dtrain, 50, evals=eval_list, custom_metric=xgb_f1, maximize=True)
+            preds = (bst.predict(dtest) > 0.5).astype(int)
+            current_score = f1_score(y_test, preds, pos_label=1)
+            if current_score > best_f_score:
+                optimal_params = params
+                best_f_score = current_score
 
-      eval_list = [(dtrain_small, 'train'), (dval, 'eval')]
-
-      bst = xgb.train(params, dtrain_small, 50, evals=eval_list, custom_metric=xgb_f1, maximize=True)
-
-      preds = (bst.predict(dtest) > 0.5).astype(int) # We could also experiment with different cutoff points
-      current_score = f1_score(y_test, preds, pos_label=1) 
-      print(current_score)
-      if current_score > best_f_score:
-        optimal_params = params
-        best_f_score = current_score
-
-
-bst = xgb.train(optimal_params, dtrain, 50, evals=eval_list, custom_metric=xgb_f1, maximize=True)
-bst.save_model('model.json')
-print(f1_score(y_test, preds, pos_label=1))
+# Train final model on small training set
+bst = xgb.train(optimal_params, dtrain, 50, evals=[(dtrain, 'train')], custom_metric=xgb_f1, maximize=True)
+bst.save_model(f'model{target_delay}.json')
+print(f"Best F1 Score: {best_f_score}")
