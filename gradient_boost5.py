@@ -33,8 +33,8 @@ for col, cats in category_map.items():
     expected_columns.extend([f"{col}_{cat}" for cat in cats])
 
 ### unrealistic sample for training
-positive_sample = data[data['delayed'] == 1].sample(n=10000, random_state=13)
-negative_sample = data[data['delayed'] == 0].sample(n=10000, random_state=14)
+positive_sample = data[data['delayed'] == 1].sample(n=110953, random_state=13)
+negative_sample = data[data['delayed'] == 0].sample(n=110953, random_state=14)
 train_subset = pd.concat([positive_sample, negative_sample], axis=0)
 
 # Apply same OHE mapping to subset

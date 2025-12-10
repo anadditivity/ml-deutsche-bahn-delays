@@ -5,7 +5,7 @@ from sklearn.metrics import f1_score
 from sklearn.model_selection import train_test_split
 
 # Load full dataset
-target_delay = 5
+target_delay = 10
 
 data = pd.read_csv('data/connections_v3.csv')
 data['delayed'] = (data['dst_arrival_delay'] > target_delay).astype(int)
@@ -33,8 +33,8 @@ for col, cats in category_map.items():
     expected_columns.extend([f"{col}_{cat}" for cat in cats])
 
 ### unrealistic sample for training
-positive_sample = data[data['delayed'] == 1].sample(n=10000, random_state=13)
-negative_sample = data[data['delayed'] == 0].sample(n=10000, random_state=14)
+positive_sample = data[data['delayed'] == 1].sample(n=43617, random_state=13)
+negative_sample = data[data['delayed'] == 0].sample(n=43617, random_state=14)
 train_subset = pd.concat([positive_sample, negative_sample], axis=0)
 
 # Apply same OHE mapping to subset
