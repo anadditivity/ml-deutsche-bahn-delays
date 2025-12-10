@@ -10,8 +10,7 @@ import xgboost as xgb
 
 
 class ModelClient:
-    #THRESHOLDS = [5, 10, 15, 20, 25, 30]
-    THRESHOLDS = [5,10,15,20]
+    THRESHOLDS = [5, 10, 15, 20, 25, 30]
 
     def __init__(self):
         base = Path(__file__).parent.parent.parent.parent
@@ -26,9 +25,10 @@ class ModelClient:
             self.boosters[t] = bst
 
         # Build expected columns from full dataset
-        self.category_map, self.expected_columns = self._build_expected_columns()
+        self.category_map, self.expected_columns, self.numeric_cols = self._build_expected_columns()
 
     def _build_expected_columns(self):
+        print('Loading OHE data, this will take some time.')
         data = pd.read_csv(self.data_path)
 
         # Create target and drop original delay column
@@ -45,22 +45,23 @@ class ModelClient:
             data[f"{col}_day"] = data[col].dt.dayofweek
         data = data.drop(columns=time_features)
 
+        numeric_cols = [col for col in data.columns if pd.api.types.is_numeric_dtype(data[col]) and col != "delayed"]
         # Collect unique categories for each categorical column
         categorical_cols = [col for col in data.columns if not pd.api.types.is_numeric_dtype(data[col]) and col != "delayed"]
         category_map = {col: data[col].astype("category").cat.categories.tolist() for col in categorical_cols}
 
         # Build expected columns list
-        expected_columns = []
+        expected_columns = numeric_cols.copy()
         for col, cats in category_map.items():
             expected_columns.extend([f"{col}_{cat}" for cat in cats])
 
-        return category_map, expected_columns
+        return category_map, expected_columns, numeric_cols
 
     def _apply_ohe(self, df: pd.DataFrame) -> pd.DataFrame:
         # Apply OHE using category_map without exploding memory
         df = df.copy()
         dummies = pd.get_dummies(df[self.category_map.keys()], prefix_sep="_", dtype="int")
-        df = pd.concat([df.drop(columns=self.category_map.keys()), dummies], axis=1)
+        df = pd.concat([df[self.numeric_cols], dummies], axis=1)
         return df.reindex(columns=self.expected_columns, fill_value=0)
 
     def _preprocess_payload(self, features: Dict[str, Any]) -> pd.DataFrame:

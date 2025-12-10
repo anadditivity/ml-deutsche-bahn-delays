@@ -3,7 +3,6 @@ from datetime import datetime
 from pathlib import Path
 from flask_cors import CORS
 
-
 from services.lookup import (
     load_data,
     search_stations,
@@ -22,13 +21,8 @@ CORS(app)
 data_path = Path(__file__).parent.parent.parent / "data" / "connections_v3.csv"
 load_data(str(data_path))
 
-
-
 def parse_iso(s):
     return datetime.fromisoformat(s)
-
-
-
 
 def build_features(payload):
     src_name = payload["src_station"]
@@ -84,7 +78,6 @@ def stations():
     name = request.args.get("name", "")
     return jsonify(search_stations(name))
 
-
 @app.route("/lines")
 def lines():
     eva_nr = request.args.get("eva_nr")
@@ -92,11 +85,9 @@ def lines():
         return jsonify(get_lines_for_station(eva_nr))
     return jsonify(get_all_lines())
 
-
 @app.route("/info-options")
 def info_options():
     return jsonify(get_info_options())
-
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -122,13 +113,10 @@ def predict():
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
-    
-    
 @app.route("/")
 def index():
     return "DB delay backend is running.", 200
 
-
 if __name__ == "__main__":
-    # Changed to false to remove double-loading
-    app.run(port=5530, debug=False)
+    # Must stay as 'True' to allow terminal requests
+    app.run(port=5530, debug=True)
