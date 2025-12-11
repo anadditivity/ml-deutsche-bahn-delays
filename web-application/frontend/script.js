@@ -73,7 +73,7 @@ document.getElementById("predict-btn").addEventListener("click", () => {
           <img src="ticket_clear.svg" alt="train">
           
           <div class="prediction-text">
-              <p>Possibilities that the train is over:</p>
+              <p>Probability that the train is over:</p>
 
               <div class="probabilities">
                   ${probLines}
