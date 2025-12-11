@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Train delays</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="ticket-container">
+
+        <img src="train_ticket.svg" alt="train">
+
+        <input id="src-station" class="station-input" type="text" placeholder="Aachen Hbf" aria-label="Station" />
+        <div id="src-station-suggestions" class="suggestions-container"></div>
+
+        <input id="dst-station" class="destination-input" type="text" placeholder="Köln Hbf" aria-label="Destination" />
+        <div id="dst-station-suggestions" class="suggestions-container"></div>
+
+        <input id="line" class="line-input" type="text" placeholder="RE1" aria-label="Line" />
+        <div id="line-suggestions" class="suggestions-container"></div>
+        
+        <input id="info" class="info-input" type="text" placeholder="Signalstörung" aria-label="Info" />
+        <div id="info-suggestions" class="suggestions-container"></div>
+
+        <input id="delay" class="delay-input" type="text" placeholder="0" aria-label="Delay" />
+        <input id="current-time" type="text" class="current-time-input" />
+        <input id="departure-time" class="departure-time-input" type="text" aria-label="Departure time" />
+        <input id="arrival-time" class="arrival-time-input" type="text" aria-label="Arrival time" />
+
+        <button  id="reset" class="reset-btn">Reset</button>
+        <button id="predict-btn" class="predict-btn">Predict Delay</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="script.js"></script>
+</body>
+</html>
