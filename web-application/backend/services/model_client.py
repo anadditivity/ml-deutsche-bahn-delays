@@ -1,13 +1,9 @@
 # The following code was re-made with help from Copilot
 # based on the code created by Emile
-
-from typing import Dict, Any, List
 from pathlib import Path
-
 import numpy as np
 import pandas as pd
 import xgboost as xgb
-
 
 class ModelClient:
     THRESHOLDS = [5, 10, 15, 20, 25, 30]
@@ -17,7 +13,7 @@ class ModelClient:
         self.data_path = base / "data" / "connections_v3.csv"
         self.model_dir = base / "web-application" / "backend" / "services"
 
-        self.boosters: Dict[int, xgb.Booster] = {}
+        self.boosters = {}
         for t in self.THRESHOLDS:
             model_path = self.model_dir / f"model{t}.json"
             bst = xgb.Booster()
@@ -57,14 +53,14 @@ class ModelClient:
 
         return category_map, expected_columns, numeric_cols
 
-    def _apply_ohe(self, df: pd.DataFrame) -> pd.DataFrame:
+    def _apply_ohe(self, df):
         # Apply OHE using category_map without exploding memory
         df = df.copy()
         dummies = pd.get_dummies(df[self.category_map.keys()], prefix_sep="_", dtype="int")
         df = pd.concat([df[self.numeric_cols], dummies], axis=1)
         return df.reindex(columns=self.expected_columns, fill_value=0)
 
-    def _preprocess_payload(self, features: Dict[str, Any]) -> pd.DataFrame:
+    def _preprocess_payload(self, features):
         X = pd.DataFrame([features])
 
         # Extract time features
@@ -82,11 +78,11 @@ class ModelClient:
 
         return X
 
-    def predict(self, features: Dict[str, Any]) -> Dict[str, Any]:
+    def predict(self, features):
         X = self._preprocess_payload(features)
         dmat = xgb.DMatrix(X)
 
-        results: Dict[str, Any] = {"model_versions": {t: f"model{t}.json" for t in self.THRESHOLDS}}
+        results = {"model_versions": {t: f"model{t}.json" for t in self.THRESHOLDS}}
         for t, bst in self.boosters.items():
             prob = float(bst.predict(dmat)[0])
             results[f"dst_arrival_delay_over_{t}_minutes_prob"] = prob
