@@ -27,7 +27,7 @@ body{
 .station-input {
   position: absolute;
   top: 36.5%;    
-  left: 40.6%;   
+  left: 39.5%;   
   width: 13.6%;  
   height: 3.9%;  
 
@@ -43,7 +43,7 @@ body{
 .destination-input {
   position: absolute;
   top: 45.5%;    
-  left: 40.6%;   
+  left: 39.5%;   
   width: 13.6%;  
   height: 3.9%;  
 
@@ -59,7 +59,7 @@ body{
 .line-input {
   position: absolute;
   top: 54.0%;    
-  left: 40.6%;   
+  left: 39.5%;   
   width: 13.7%;  
   height: 3.9%;  
 
@@ -75,7 +75,7 @@ body{
 .info-input {
   position: absolute;
   top: 62.5%;    
-  left: 40.5%;   
+  left: 39.5%;   
   width: 13.7%;  
   height: 3.9%;  
 
@@ -90,9 +90,9 @@ body{
 
 .delay-input {
   position: absolute;
-  top: 62.5%;    
-  left:57.4%;   
-  width: 13.7%;  
+  top: 62.4%;    
+  left:56.4%;   
+  width: 14.6%;  
   height: 3.9%;  
 
   font-size: 1.2vw;
@@ -107,8 +107,8 @@ body{
 .current-time-input {
   position: absolute;
   top: 36.5%;    
-  left: 57.4%;   
-  width: 13.7%;  
+  left: 56.4%;   
+  width: 14.6%;  
   height: 3.9%;  
 
   font-size: 1.2vw;
@@ -122,9 +122,9 @@ body{
 
 .departure-time-input {
   position: absolute;
-  top: 45.5%;  
-  left: 57.4%;   
-  width: 13.7%;  
+  top: 45.6%;  
+  left: 56.4%;   
+  width: 14.6%;  
   height: 3.9%;  
 
   font-size: 1.2vw;
@@ -140,8 +140,8 @@ body{
 .arrival-time-input {
   position: absolute;
   top: 54.0%;   
-  left: 57.4%;   
-  width: 13.7%;  
+  left: 56.4%;   
+  width: 14.6%;  
   height: 3.9%;  
 
   font-size: 1.2vw;
@@ -215,39 +215,34 @@ body{
 
 .prediction-text {
     font-family: "Courier New", monospace; 
-    padding: 10px 20px;
+    padding:  0.5vh 4vw;
     color: #222;
-    font-size: 18px;
+    font-size: clamp(8px, 1.4vw, 20px);
     line-height: 1.4;
     position: absolute;
-    top: 37%;    
-    left:19%;   
-    width: 40%;  
-    height: 6%;  
+    top: 20%;    
+    left:12.7%;   
+    width: 50%;  
+    height: auto;  
     text-align: center;
+    overflow-y: auto;
 }
 
 .prediction-text p {
-    margin: 5px 0;
+    margin: clamp(0px, 1.2vw, 16px);
     font-weight: bold;
 }
 
-.prediction-text .prob-line {
-    font-size: 14px;
-    color: #555;
-}
-
-.prediction-text .model-version {
-    font-size: 12px;
-    color: #888;
-    margin-top: 8px;
+.probabilities {
+  font-size: clamp(6px, 1.1vw, 18px);
+  color: #222;
 }
 
 
 
 .suggestions-container {
    position: absolute;    
-    left: 40.5%;   
+    left: 39.5%;   
     width: 13.7%;  
 
     background: #f9e2cb;
