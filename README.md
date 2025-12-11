@@ -1,4 +1,4 @@
-# ml-deutsche-bahn-delays
+# Will my Deutsche Bahn arrive on time?
 UniTartu Machine Learning project "Will my Deutsche Bahn arrive on time?"
 
 # Quick Start Guide
@@ -25,7 +25,7 @@ When you've opened this folder in Visual Studio Code, it will likely ask you to 
 3. Choose `conda`.
 4. Choose the latest Python version (mine was `3.11`).
 5. VSCode will create a `.conda` path that will not be synced to GitHub. 
-6. Try running a terminal (in the top bar, choose Terminal -> New Terminal or command `> Terminal: Create New Terminal`). If it shows an error, close VSCode and open it again in this folder. It should show a warning about inheriting `conda` environments -- press `Allow`. Alternatively, if it doesn't work... Let us know :P
+6. Try running a terminal (in the top bar, choose Terminal -> New Terminal or command `> Terminal: Create New Terminal`). If it shows an error, close VSCode and open it again in this folder. It should show a warning about inheriting `conda` environments -- press `Allow`.
 
 ## Option 2: create it manually
 To create it (needs to only be done once), run

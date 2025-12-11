@@ -2,10 +2,14 @@ name: ml-db-delays
 channels:
   - defaults
 dependencies:
-  - pandas
-  - scikit-learn
-  - plotnine
-  - numpy
-  - seaborn
-  - matplotlib
   - ipykernel
+  - flask
+  - flask-cors
+  - scikit-learn
+  - matplotlib
+  - numpy
+  - pandas
+  - pytest
+  - python-Levenshtein
+  - xgboost
+  - pip
