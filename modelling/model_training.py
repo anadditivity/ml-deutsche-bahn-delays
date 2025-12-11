@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 # Load full dataset
 target_delay = 5
 
-data = pd.read_csv('data/connections_v3.csv')
+data = pd.read_csv('../data/connections_v3.csv')
 data['delayed'] = (data['dst_arrival_delay'] > target_delay).astype(int)
 data = data.drop(columns=list(data.filter(regex='dst_arrival_delay')))
 

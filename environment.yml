@@ -12,4 +12,5 @@ dependencies:
   - pytest
   - python-Levenshtein
   - xgboost
+  - dask
   - pip
