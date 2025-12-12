@@ -1,5 +1,5 @@
 # The following code was re-made with help from Copilot
-# based on the code created by Emile
+# based on the code created by E
 from pathlib import Path
 import numpy as np
 import pandas as pd
