@@ -5,7 +5,7 @@ Based on the `deutsche-bahn-db-delays` Kaggle dataset available [here](http://ww
 
 # Repository Structure
 At the end of the project, the repository was restructured.
-## `data/` - files related to data exploration and preprocessing
+## `data/` - data exploration and preprocessing
 - `lines/` - code and data for fixing the line mapping for the dataset:
 	- `correct_line_mapping.csv` - correct line mapping.
 	- `mapping.ipynb` - a notebook file for creating `correct_line_mapping.csv`.
@@ -18,11 +18,11 @@ At the end of the project, the repository was restructured.
 - `train_line_reconstruction_example.ipynb` - an example of train line reconstruction -- cross-matching all the stops on a line to append the data from all stops to all the other stops.
 - `train_line_reconstruction.ipynb` - notebook to apply to `DBtrainlines.csv` to get `connections_v3.csv`. Fixes line numbering and cross-matches the various stops on a line.
 
-## `modelling/`
+## `modelling/` - modelling
 - `model_selection.ipynb` - initial exploration and thoughts for selecting a model for this task.
 - `model_training.ipynb` - previously named `gradient_boost.py`; the code for training the XGBoost models. Outputs `model{t}.json`, where `t` is the target prediction threshold.
 
-## `web-application/`
+## `web-application/` - web application
 - `backend/` - backend for the web application, including but not limited to:
 	- `services/model_client.py` - loading the model from files.
 	- `services/lookup.py` - looking up data about the lines.
