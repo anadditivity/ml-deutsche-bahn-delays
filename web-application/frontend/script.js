@@ -56,31 +56,31 @@ document.getElementById("predict-btn").addEventListener("click", () => {
     .then(res => res.json())  
     .then(response => {
         const newTicket = document.createElement("div");
-        newTicket.classList.add("ticket-container");
+        newTicket.classList.add("ticket-container","prediction-ticket");
 
-        const delay = response.dst_arrival_delay;
-        let message = "";
+        // Build probability lines dynamically
+      const probLines = `
+        <p>5 minutes late: ${Math.round(response.dst_arrival_delay_over_5_minutes_prob * 100)}%</p>
+        <p>10 minutes late: ${Math.round(response.dst_arrival_delay_over_10_minutes_prob * 100)}%</p>
+        <p>15 minutes late: ${Math.round(response.dst_arrival_delay_over_15_minutes_prob * 100)}%</p>
+        <p>20 minutes late: ${Math.round(response.dst_arrival_delay_over_20_minutes_prob * 100)}%</p>
+        <p>25 minutes late: ${Math.round(response.dst_arrival_delay_over_25_minutes_prob * 100)}%</p>
+        <p>30 minutes late: ${Math.round(response.dst_arrival_delay_over_30_minutes_prob * 100)}%</p>
+      `;
 
-        if (delay <= 1) {
-            message = "Train will arrive on time to destination.";
-        } else {
-            message = `Arrival to destination will delay about ${Math.round(delay)} minutes.`;
-        }
-        
-        //const prob5 = Math.round(response.dst_arrival_delay_over_5_minutes_prob * 100);
-        //<p class="prob-line">Chance of >5 min delay: ${prob5}%</p>
+      newTicket.innerHTML = `
+        <div class="prediction-section">
+          <img src="ticket_clear.svg" alt="train">
+          
+          <div class="prediction-text">
+              <p>Probability that the train is over:</p>
 
-        // Build ticket content
-        newTicket.innerHTML = `
-            <div class="prediction-section">
-              <img src="ticket_clear.svg" alt="train">
-
-              <div class="prediction-text">
-                  <p>${message}</p>
-                  <p class="model-version">Model: ${response.model_version}</p>
+              <div class="probabilities">
+                  ${probLines}
               </div>
-            </div>
-        `;
+          </div>
+        </div>
+      `;
 
 
         document
@@ -102,7 +102,7 @@ document.querySelector(".reset-btn").addEventListener("click", () => {
     const inputs = document.querySelectorAll("input");
     inputs.forEach(input => input.value = "");
 
-    const predictionDivs = document.querySelectorAll(".prediction-section");
+    const predictionDivs = document.querySelectorAll(".prediction-ticket");
     predictionDivs.forEach(div => div.remove());
 
     currentTimePicker.clear();

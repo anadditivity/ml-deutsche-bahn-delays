@@ -100,7 +100,7 @@ def load_data(csv_path: str = "data/connections_v3.csv"):
 
 
 
-def search_stations(name_substring: str, limit: int = 100):
+def search_stations(name_substring: str, limit: int = 1200):
     q = name_substring.lower()
     
     if not q:
